@@ -56,7 +56,7 @@ const Scan = ({ navigation }) => {
                     style={{
                         height: 45,
                         width: 45,
-                        backgroundColor: COLORS.green,
+                        backgroundColor: COLORS.primary,
                         borderRadius: 10,
                         alignItems: 'center',
                         justifyContent: 'center'

@@ -86,7 +86,7 @@ const SignUp = ({ navigation }) => {
                 }}
             >
                 <Image
-                    source={images.wallieLogo}
+                    source={images.walletLogo}
                     resizeMode="contain"
                     style={{
                         width: "60%"
@@ -232,14 +232,14 @@ const SignUp = ({ navigation }) => {
                 <TouchableOpacity
                     style={{
                         height: 60,
-                        backgroundColor: COLORS.black,
+                        backgroundColor: COLORS.white,
                         borderRadius: SIZES.radius / 1.5,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
                     onPress={() => navigation.navigate("Home")}
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
+                    <Text style={{ color: COLORS.black, ...FONTS.h3 }}>Continue</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -310,7 +310,7 @@ const SignUp = ({ navigation }) => {
             style={{ flex: 1 }}
         >
             <LinearGradient
-                colors={[COLORS.lime, COLORS.emerald]}
+                colors={[COLORS.primary, COLORS.primary]}
                 style={{ flex: 1 }}
             >
                 <ScrollView>

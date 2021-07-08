@@ -104,8 +104,8 @@ const Home = () => {
         return (
             <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={{ ...FONTS.h1 }}>Hello!</Text>
-                    <Text style={{ ...FONTS.body2, color: COLORS.gray }}>By Solombrino Ismail</Text>
+                    <Text style={{ ...FONTS.h1,color: COLORS.white }}>Welcome!</Text>
+                    <Text style={{ ...FONTS.body2, color: COLORS.white }}>By Solombrino Ismail</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -115,7 +115,7 @@ const Home = () => {
                             width: 40,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: COLORS.lightGray
+                            backgroundColor: COLORS.black
                         }}
                     >
                         <Image
@@ -123,14 +123,14 @@ const Home = () => {
                             style={{
                                 width: 20,
                                 height: 20,
-                                tintColor: COLORS.secondary
+                                tintColor: COLORS.white
                             }}
                         />
                         <View
                             style={{
                                 position: 'absolute',
-                                top: -5,
-                                right: -5,
+                                top: 3,
+                                right:3,
                                 height: 10,
                                 width: 10,
                                 backgroundColor: COLORS.red,
@@ -170,7 +170,7 @@ const Home = () => {
 
         const Header = () => (
             <View style={{ marginBottom: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h3 }}>Features</Text>
+                <Text style={{color: COLORS.white, ...FONTS.h3  }}>Features</Text>
             </View>
         )
 
@@ -200,7 +200,7 @@ const Home = () => {
                         }}
                     />
                 </View>
-                <Text style={{ textAlign: 'center', flexWrap: 'wrap', ...FONTS.body4 }}>{item.description}</Text>
+                <Text style={{color: COLORS.white, textAlign: 'center', flexWrap: 'wrap', ...FONTS.body4 }}>{item.description}</Text>
             </TouchableOpacity>
         )
 
@@ -236,12 +236,12 @@ const Home = () => {
                 }}
             >
                 <View style={{ flex: 1 }}>
-                    <Text style={{ ...FONTS.h3 }}>Special Promos</Text>
+                    <Text style={{ color: COLORS.white,...FONTS.h3 }}>Special Promos</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => console.log("View All")}
                 >
-                    <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>View All</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.body4 }}>View All</Text>
                 </TouchableOpacity>
             </View>
 
@@ -278,7 +278,7 @@ const Home = () => {
                 <View
                     style={{
                         padding: SIZES.padding,
-                        backgroundColor: COLORS.lightGray,
+                        backgroundColor: COLORS.white,
                         borderBottomLeftRadius: 20,
                         borderBottomRightRadius: 20
                     }}
@@ -308,7 +308,7 @@ const Home = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
             {renderPromos()}
         </SafeAreaView>
     )
