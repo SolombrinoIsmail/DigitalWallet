@@ -180,6 +180,7 @@ const SignUp = ({ navigation }) => {
                             placeholder="Enter Phone Number"
                             placeholderTextColor={COLORS.white}
                             selectionColor={COLORS.white}
+                            keyboardType="numeric"
                         />
                     </View>
                 </View>
