@@ -5,31 +5,31 @@ import {
     Image,
     TouchableOpacity
 } from "react-native"
-import { Camera } from 'expo-camera'
-import { COLORS, FONTS, SIZES, icons, images } from "../constants";
+import QRCode from 'react-native-qrcode-svg';
+import {Camera} from 'expo-camera'
+import {COLORS, FONTS, SIZES, icons, images} from "../constants";
 
-const Scan = ({ navigation }) => {
+const Scan = ({navigation}) => {
     const [hasPermission, setHasPermission] = React.useState(null);
 
     React.useEffect(() => {
         (async () => {
-            const { status } = await Camera.requestPermissionsAsync();
+            const {status} = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
         })();
     }, []);
 
     if (hasPermission === null) {
-        return <View />;
+        return <View/>;
     }
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
 
 
-
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row', marginTop: SIZES.padding * 4, paddingHorizontal: SIZES.padding * 3 }}>
+            <View style={{flexDirection: 'row', marginTop: SIZES.padding * 4, paddingHorizontal: SIZES.padding * 3}}>
                 <TouchableOpacity
                     style={{
                         width: 45,
@@ -48,8 +48,8 @@ const Scan = ({ navigation }) => {
                     />
                 </TouchableOpacity>
 
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: COLORS.white, ...FONTS.body3 }}>Scan for Payment</Text>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: COLORS.white, ...FONTS.body3}}>Scan for Payment</Text>
                 </View>
 
                 <TouchableOpacity
@@ -113,7 +113,7 @@ const Scan = ({ navigation }) => {
                     backgroundColor: COLORS.white
                 }}
             >
-                <Text style={{ ...FONTS.h4 }}>Another payment methods</Text>
+                <Text style={{...FONTS.h4}}>Another payment methods</Text>
 
                 <View
                     style={{
@@ -150,7 +150,7 @@ const Scan = ({ navigation }) => {
                                 }}
                             />
                         </View>
-                        <Text style={{ marginLeft: SIZES.padding, ...FONTS.body4 }}>Phone Number</Text>
+                        <Text style={{marginLeft: SIZES.padding, ...FONTS.body4}}>Phone Number</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -181,7 +181,7 @@ const Scan = ({ navigation }) => {
                                 }}
                             />
                         </View>
-                        <Text style={{ marginLeft: SIZES.padding, ...FONTS.body4 }}>Barcode</Text>
+                        <Text style={{marginLeft: SIZES.padding, ...FONTS.body4}}>Barcode</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -190,15 +190,20 @@ const Scan = ({ navigation }) => {
 
     function onBarCodeRead(result) {
         console.log(result.data)
+        return (
+            <QRCode
+                value="result.data"
+            />
+        );
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.transparent }}>
+        <View style={{flex: 1, backgroundColor: COLORS.transparent}}>
             <Camera
                 ref={ref => {
                     this.camera = ref
                 }}
-                style={{ flex: 1 }}
+                style={{flex: 1}}
                 captureAudio={false}
                 type={Camera.Constants.Type.back}
                 flashMode={Camera.Constants.FlashMode.off}

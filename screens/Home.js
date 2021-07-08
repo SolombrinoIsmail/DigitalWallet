@@ -117,7 +117,6 @@ const Home = ({navigation}) => {
                             alignItems: 'center',
                             backgroundColor: COLORS.black
                         }}
-                        onPress={() => navigation.navigate("News")}
                     >
                         <Image
                             source={icons.bell}
