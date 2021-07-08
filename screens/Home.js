@@ -7,9 +7,9 @@ import {
     FlatList,
     TouchableOpacity
 } from "react-native"
-import { COLORS, SIZES, FONTS, icons, images } from "../constants"
+import {COLORS, SIZES, FONTS, icons, images} from "../constants"
 
-const Home = () => {
+const Home = ({navigation}) => {
 
     const featuresData = [
         {
@@ -102,13 +102,13 @@ const Home = () => {
 
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ ...FONTS.h1,color: COLORS.white }}>Welcome!</Text>
-                    <Text style={{ ...FONTS.body2, color: COLORS.white }}>By Solombrino Ismail</Text>
+            <View style={{flexDirection: 'row', marginVertical: SIZES.padding * 2}}>
+                <View style={{flex: 1}}>
+                    <Text style={{...FONTS.h1, color: COLORS.white}}>Welcome!</Text>
+                    <Text style={{...FONTS.body2, color: COLORS.white}}>By Solombrino Ismail</Text>
                 </View>
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <TouchableOpacity
                         style={{
                             height: 40,
@@ -117,6 +117,7 @@ const Home = () => {
                             alignItems: 'center',
                             backgroundColor: COLORS.black
                         }}
+                        onPress={() => navigation.navigate("News")}
                     >
                         <Image
                             source={icons.bell}
@@ -130,7 +131,7 @@ const Home = () => {
                             style={{
                                 position: 'absolute',
                                 top: 3,
-                                right:3,
+                                right: 3,
                                 height: 10,
                                 width: 10,
                                 backgroundColor: COLORS.red,
@@ -169,14 +170,14 @@ const Home = () => {
     function renderFeatures() {
 
         const Header = () => (
-            <View style={{ marginBottom: SIZES.padding * 2 }}>
-                <Text style={{color: COLORS.white, ...FONTS.h3  }}>Features</Text>
+            <View style={{marginBottom: SIZES.padding * 2}}>
+                <Text style={{color: COLORS.white, ...FONTS.h3}}>Features</Text>
             </View>
         )
 
-        const renderItem = ({ item }) => (
+        const renderItem = ({item}) => (
             <TouchableOpacity
-                style={{ marginBottom: SIZES.padding * 2, width: 60, alignItems: 'center' }}
+                style={{marginBottom: SIZES.padding * 2, width: 60, alignItems: 'center'}}
                 onPress={() => console.log(item.description)}
             >
                 <View
@@ -200,7 +201,11 @@ const Home = () => {
                         }}
                     />
                 </View>
-                <Text style={{color: COLORS.white, textAlign: 'center', flexWrap: 'wrap', ...FONTS.body4 }}>{item.description}</Text>
+                <Text style={{
+                    color: COLORS.white,
+                    textAlign: 'center',
+                    flexWrap: 'wrap', ...FONTS.body4
+                }}>{item.description}</Text>
             </TouchableOpacity>
         )
 
@@ -209,10 +214,10 @@ const Home = () => {
                 ListHeaderComponent={Header}
                 data={features}
                 numColumns={4}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
-                style={{ marginTop: SIZES.padding * 2 }}
+                style={{marginTop: SIZES.padding * 2}}
             />
         )
     }
@@ -235,19 +240,19 @@ const Home = () => {
                     marginBottom: SIZES.padding
                 }}
             >
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: COLORS.white,...FONTS.h3 }}>Special Promos</Text>
+                <View style={{flex: 1}}>
+                    <Text style={{color: COLORS.white, ...FONTS.h3}}>Special Promos</Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => console.log("View All")}
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.body4 }}>View All</Text>
+                    <Text style={{color: COLORS.white, ...FONTS.body4}}>View All</Text>
                 </TouchableOpacity>
             </View>
 
         )
 
-        const renderItem = ({ item }) => (
+        const renderItem = ({item}) => (
             <TouchableOpacity
                 style={{
                     marginVertical: SIZES.base,
@@ -283,8 +288,8 @@ const Home = () => {
                         borderBottomRightRadius: 20
                     }}
                 >
-                    <Text style={{ ...FONTS.h4 }}>{item.title}</Text>
-                    <Text style={{ ...FONTS.body4 }}>{item.description}</Text>
+                    <Text style={{...FONTS.h4}}>{item.title}</Text>
+                    <Text style={{...FONTS.body4}}>{item.description}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -292,15 +297,15 @@ const Home = () => {
         return (
             <FlatList
                 ListHeaderComponent={HeaderComponent}
-                contentContainerStyle={{ paddingHorizontal: SIZES.padding * 3 }}
+                contentContainerStyle={{paddingHorizontal: SIZES.padding * 3}}
                 numColumns={2}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
                 data={specialPromos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
-                    <View style={{ marginBottom: 80 }}>
+                    <View style={{marginBottom: 80}}>
                     </View>
                 }
             />
@@ -308,7 +313,7 @@ const Home = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
+        <SafeAreaView style={{flex: 1, backgroundColor: COLORS.black}}>
             {renderPromos()}
         </SafeAreaView>
     )
