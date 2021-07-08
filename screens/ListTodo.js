@@ -8,15 +8,23 @@ import {
     TextInput,
     TouchableOpacity,
     Keyboard,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import Task from '../components/Task';
+import * as Haptics from "expo-haptics";
 
 export default function ListTodo() {
     const [task, setTask] = useState();
     const [taskItems, setTaskItems] = useState([]);
 
     const handleAddTask = () => {
+        if (!task) {
+            Alert.alert(
+                "Empty!",
+                "Please enter something to do")
+            return;
+        }
         Keyboard.dismiss();
         setTaskItems([...taskItems, task])
         setTask(null);
@@ -27,6 +35,25 @@ export default function ListTodo() {
         itemsCopy.splice(index, 1);
         setTaskItems(itemsCopy)
     }
+    const createTwoButtonAlert = (index) =>
+        Alert.alert(
+            "Delete Task?",
+            "Are you sure you want to delete this Task?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "Yes", onPress: () => {
+                        completeTask(index);
+                        console.log("OK Pressed")
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
 
     return (
         <View style={styles.container}>
@@ -40,13 +67,16 @@ export default function ListTodo() {
 
                 {/* Today's Tasks */}
                 <View style={styles.tasksWrapper}>
-                    <Text style={styles.sectionTitle}>Today's tasks</Text>
+                    <Text style={{...FONTS.h1, color: COLORS.white}}>Today's tasks</Text>
                     <View style={styles.items}>
                         {/* This is where the tasks will go! */}
                         {
                             taskItems.map((item, index) => {
                                 return (
-                                    <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                                    <TouchableOpacity key={index} onPress={() => {
+                                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+                                        createTwoButtonAlert(index)
+                                    }}>
                                         <Task text={item}/>
                                     </TouchableOpacity>
                                 )
@@ -65,7 +95,10 @@ export default function ListTodo() {
             >
                 <TextInput style={styles.input} placeholder={'Write a task'} value={task}
                            onChangeText={text => setTask(text)}/>
-                <TouchableOpacity onPress={() => handleAddTask()}>
+                <TouchableOpacity onPress={() => {
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                    handleAddTask()
+                }}>
                     <View style={styles.addWrapper}>
                         <Text style={styles.addText}>+</Text>
                     </View>
@@ -79,7 +112,7 @@ export default function ListTodo() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:  COLORS.black,
+        backgroundColor: COLORS.black,
     },
     tasksWrapper: {
         paddingTop: 80,
@@ -95,7 +128,7 @@ const styles = StyleSheet.create({
     },
     writeTaskWrapper: {
         position: 'absolute',
-        top:130,
+        top: 130,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -104,7 +137,7 @@ const styles = StyleSheet.create({
     input: {
         paddingVertical: 15,
         paddingHorizontal: 15,
-        backgroundColor:  COLORS.white,
+        backgroundColor: COLORS.white,
         borderRadius: 60,
         borderColor: COLORS.primary,
         borderWidth: 2,
@@ -113,7 +146,7 @@ const styles = StyleSheet.create({
     addWrapper: {
         width: 60,
         height: 60,
-        backgroundColor:  COLORS.white,
+        backgroundColor: COLORS.white,
         borderRadius: 60,
         justifyContent: 'center',
         alignItems: 'center',

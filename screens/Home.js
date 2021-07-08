@@ -8,6 +8,7 @@ import {
     TouchableOpacity
 } from "react-native"
 import {COLORS, SIZES, FONTS, icons, images} from "../constants"
+import * as Haptics from 'expo-haptics';
 
 const Home = ({navigation}) => {
 
@@ -117,6 +118,10 @@ const Home = ({navigation}) => {
                             alignItems: 'center',
                             backgroundColor: COLORS.black
                         }}
+                        onPress={() => {
+                            Haptics.impactAsync();
+                            console.log('Ring Bell')
+                        }}
                     >
                         <Image
                             source={icons.bell}
@@ -177,7 +182,10 @@ const Home = ({navigation}) => {
         const renderItem = ({item}) => (
             <TouchableOpacity
                 style={{marginBottom: SIZES.padding * 2, width: 60, alignItems: 'center'}}
-                onPress={() => console.log(item.description)}
+                onPress={() => {
+                    Haptics.impactAsync();
+                    console.log(item.description)
+                }}
             >
                 <View
                     style={{
@@ -243,7 +251,10 @@ const Home = ({navigation}) => {
                     <Text style={{color: COLORS.white, ...FONTS.h3}}>Special Promos</Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => console.log("View All")}
+                    onPress={() => {
+                        Haptics.impactAsync();
+                        console.log("View All")
+                    }}
                 >
                     <Text style={{color: COLORS.white, ...FONTS.body4}}>View All</Text>
                 </TouchableOpacity>
@@ -251,13 +262,17 @@ const Home = ({navigation}) => {
 
         )
 
+
         const renderItem = ({item}) => (
             <TouchableOpacity
                 style={{
                     marginVertical: SIZES.base,
                     width: SIZES.width / 2.5
                 }}
-                onPress={() => console.log(item.title)}
+                onPress={() => {
+                    Haptics.impactAsync();
+                    console.log(item.title)
+                }}
             >
                 <View
                     style={{

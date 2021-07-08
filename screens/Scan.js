@@ -5,12 +5,14 @@ import {
     Image,
     TouchableOpacity
 } from "react-native"
-import QRCode from 'react-native-qrcode-svg';
 import {Camera} from 'expo-camera'
 import {COLORS, FONTS, SIZES, icons, images} from "../constants";
+import * as Haptics from 'expo-haptics';
+
 
 const Scan = ({navigation}) => {
     const [hasPermission, setHasPermission] = React.useState(null);
+
 
     React.useEffect(() => {
         (async () => {
@@ -36,7 +38,10 @@ const Scan = ({navigation}) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => {
+                        Haptics.impactAsync();
+                        navigation.navigate("Home")
+                    }}
                 >
                     <Image
                         source={icons.close}
@@ -61,7 +66,10 @@ const Scan = ({navigation}) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => console.log("Info")}
+                    onPress={() => {
+                        Haptics.impactAsync();
+                        console.log("Info")
+                    }}
                 >
                     <Image
                         source={icons.info}
@@ -128,7 +136,10 @@ const Scan = ({navigation}) => {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}
-                        onPress={() => console.log("Phone Number")}
+                        onPress={() => {
+                            Haptics.impactAsync();
+                            console.log('Phone Number')
+                        }}
                     >
                         <View
                             style={{
@@ -159,7 +170,10 @@ const Scan = ({navigation}) => {
                             alignItems: 'center',
                             marginLeft: SIZES.padding * 2
                         }}
-                        onPress={() => console.log("Barcode")}
+                        onPress={() => {
+                            Haptics.impactAsync();
+                            console.log("Barcode")
+                        }}
                     >
                         <View
                             style={{
@@ -190,11 +204,6 @@ const Scan = ({navigation}) => {
 
     function onBarCodeRead(result) {
         console.log(result.data)
-        return (
-            <QRCode
-                value="result.data"
-            />
-        );
     }
 
     return (
@@ -219,6 +228,7 @@ const Scan = ({navigation}) => {
                 {renderScanFocus()}
                 {renderPaymentMethods()}
             </Camera>
+
         </View>
     )
 }

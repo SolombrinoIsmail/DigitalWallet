@@ -12,11 +12,12 @@ import {
     ScrollView,
     Platform
 } from "react-native"
-import { LinearGradient } from 'expo-linear-gradient'
+import {LinearGradient} from 'expo-linear-gradient'
 
-import { COLORS, SIZES, FONTS, icons, images } from "../constants"
+import {COLORS, SIZES, FONTS, icons, images} from "../constants"
+import * as Haptics from "expo-haptics";
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({navigation}) => {
 
     const [showPassword, setShowPassword] = React.useState(false)
 
@@ -49,38 +50,13 @@ const SignUp = ({ navigation }) => {
             })
     }, [])
 
-    function renderHeader() {
-        return (
-            <TouchableOpacity
-                style={{
-                    flexDirection: 'row',
-                    alignItems: "center",
-                    marginTop: SIZES.padding * 6,
-                    paddingHorizontal: SIZES.padding * 2
-                }}
-                onPress={() => console.log("Sign Up")}
-            >
-                <Image
-                    source={icons.back}
-                    resizeMode="contain"
-                    style={{
-                        width: 20,
-                        height: 20,
-                        tintColor: COLORS.white
-                    }}
-                />
-
-                <Text style={{ marginLeft: SIZES.padding * 1.5, color: COLORS.white, ...FONTS.h4 }}>Sign Up</Text>
-            </TouchableOpacity>
-        )
-    }
 
     function renderLogo() {
         return (
             <View
                 style={{
                     marginTop: SIZES.padding * 6,
-                    height: 200,
+                    height: 250,
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}
@@ -105,8 +81,8 @@ const SignUp = ({ navigation }) => {
                 }}
             >
                 {/* Full Name */}
-                <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body3 }}>Full Name</Text>
+                <View style={{marginTop: SIZES.padding * 3}}>
+                    <Text style={{color: COLORS.lightGreen, ...FONTS.body3}}>Full Name</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -123,10 +99,10 @@ const SignUp = ({ navigation }) => {
                 </View>
 
                 {/* Phone Number */}
-                <View style={{ marginTop: SIZES.padding * 2 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body3 }}>Phone Number</Text>
+                <View style={{marginTop: SIZES.padding * 2}}>
+                    <Text style={{color: COLORS.lightGreen, ...FONTS.body3}}>Phone Number</Text>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{flexDirection: 'row'}}>
                         {/* Country Code */}
                         <TouchableOpacity
                             style={{
@@ -140,7 +116,7 @@ const SignUp = ({ navigation }) => {
                             }}
                             onPress={() => setModalVisible(true)}
                         >
-                            <View style={{ justifyContent: 'center' }}>
+                            <View style={{justifyContent: 'center'}}>
                                 <Image
                                     source={icons.down}
                                     style={{
@@ -150,9 +126,9 @@ const SignUp = ({ navigation }) => {
                                     }}
                                 />
                             </View>
-                            <View style={{ justifyContent: 'center', marginLeft: 5 }}>
+                            <View style={{justifyContent: 'center', marginLeft: 5}}>
                                 <Image
-                                    source={{ uri: selectedArea?.flag }}
+                                    source={{uri: selectedArea?.flag}}
                                     resizeMode="contain"
                                     style={{
                                         width: 30,
@@ -161,8 +137,8 @@ const SignUp = ({ navigation }) => {
                                 />
                             </View>
 
-                            <View style={{ justifyContent: 'center', marginLeft: 5 }}>
-                                <Text style={{ color: COLORS.white, ...FONTS.body3 }}>{selectedArea?.callingCode}</Text>
+                            <View style={{justifyContent: 'center', marginLeft: 5}}>
+                                <Text style={{color: COLORS.white, ...FONTS.body3}}>{selectedArea?.callingCode}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -186,8 +162,8 @@ const SignUp = ({ navigation }) => {
                 </View>
 
                 {/* Password */}
-                <View style={{ marginTop: SIZES.padding * 2 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body3 }}>Password</Text>
+                <View style={{marginTop: SIZES.padding * 2}}>
+                    <Text style={{color: COLORS.lightGreen, ...FONTS.body3}}>Password</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -228,7 +204,7 @@ const SignUp = ({ navigation }) => {
 
     function renderButton() {
         return (
-            <View style={{ margin: SIZES.padding * 3 }}>
+            <View style={{margin: SIZES.padding * 3}}>
                 <TouchableOpacity
                     style={{
                         height: 60,
@@ -237,9 +213,12 @@ const SignUp = ({ navigation }) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+                        navigation.navigate("Home")
+                    }}
                 >
-                    <Text style={{ color: COLORS.black, ...FONTS.h3 }}>Continue</Text>
+                    <Text style={{color: COLORS.black, ...FONTS.h3}}>Continue</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -247,24 +226,24 @@ const SignUp = ({ navigation }) => {
 
     function renderAreaCodesModal() {
 
-        const renderItem = ({ item }) => {
+        const renderItem = ({item}) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: SIZES.padding, flexDirection: 'row' }}
+                    style={{padding: SIZES.padding, flexDirection: 'row'}}
                     onPress={() => {
                         setSelectedArea(item)
                         setModalVisible(false)
                     }}
                 >
                     <Image
-                        source={{ uri: item.flag }}
+                        source={{uri: item.flag}}
                         style={{
                             width: 30,
                             height: 30,
                             marginRight: 10
                         }}
                     />
-                    <Text style={{ ...FONTS.body4 }}>{item.name}</Text>
+                    <Text style={{...FONTS.body4}}>{item.name}</Text>
                 </TouchableOpacity>
             )
         }
@@ -278,7 +257,7 @@ const SignUp = ({ navigation }) => {
                 <TouchableWithoutFeedback
                     onPress={() => setModalVisible(false)}
                 >
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         <View
                             style={{
                                 height: 400,
@@ -307,14 +286,13 @@ const SignUp = ({ navigation }) => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : null}
-            style={{ flex: 1 }}
+            style={{flex: 1}}
         >
             <LinearGradient
                 colors={[COLORS.primary, COLORS.primary]}
-                style={{ flex: 1 }}
+                style={{flex: 1}}
             >
                 <ScrollView>
-                    {renderHeader()}
                     {renderLogo()}
                     {renderForm()}
                     {renderButton()}
