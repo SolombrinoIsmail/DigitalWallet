@@ -1,3 +1,4 @@
 # DigitalWallet
 A cyberwallet (alternative names: e-wallet, cryptowallet, or digital wallet) allows users to store funds on electronic platforms and use them to make payments for goods and services on the Internet. Users of an e-wallet obtain funds in an account (equivalent to replenishing a virtual "wallet") by depositing them via their preferred payment method, depending on the methods enabled by the provider. Credit card payment is the most common, but bank transfers or direct debit are also possible.
-
+# React-Native & EXPO Framework
+Expo is a framework and a platform for universal React applications. It is a set of tools and services built around React Native and native platforms that help you develop, build, deploy, and quickly iterate on iOS, Android, and web apps from the same JavaScript/TypeScript codebase.
