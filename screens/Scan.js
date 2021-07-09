@@ -13,10 +13,9 @@ import {AsyncStorage} from 'react-native';
 import {render} from "react-dom";
 
 const Scan = ({navigation}) => {
+    let counter = 0;
     const [hasPermission, setHasPermission] = React.useState(null);
     const [hasData, setData] = React.useState(null);
-    var qr = "No Qr-Code scanned yet.";
-    let counter = 0;
     React.useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
@@ -217,38 +216,36 @@ const Scan = ({navigation}) => {
         )
     }
 
+
     function onBarCodeRead(result) {
-        if (result.data != null) {
-            if (counter === 0) {
-                setData(result.data)
-                console.log("QR Data:" + result.data)
-                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
-                Alert.alert(
-                    "QR-Code scanned successfully",
-                    "Nice",
-                    [
-                        {
-                            text: "Cancel",
-                            onPress: () => {
-                                counter = 0, console.log("Cancel Pressed")
-                            },
-                            style: "cancel",
+        if (counter === 0) {
+            Alert.alert(
+                "QR-Code scanned successfully",
+                "Nice",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => {
+                            counter = 0, console.log("Cancel Pressed")
                         },
-                        {
-                            text: "OK", onPress: () => {
-                                counter = 0, console.log("OK Pressed")
-                            }
+                        style: "cancel",
+                    },
+                    {
+                        text: "OK", onPress: () => {
+                            counter = 0, console.log("OK Pressed")
                         }
-                    ],
-                    {cancelable: false}
-                );
-                counter++
-            }
+                    }
+                ],
+                {cancelable: false}
+            )
+            counter = 1
+            setData(result.data)
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+            counter++
         }
     }
 
     function displayQRLink(QR) {
-        console.log("Param QR: " + QR)
         return (
             <View>
                 <Text>{QR}</Text>
@@ -258,11 +255,10 @@ const Scan = ({navigation}) => {
 
     function displayQRCode(QR) {
         if (QR != null) {
-            console.log("Param QR: " + QR)
             return (
                 <View>
                     <QRCode style={{paddingLeft: 100}}
-                            value={hasData}
+                            value={QR}
                     />
                 </View>
             )
@@ -272,7 +268,7 @@ const Scan = ({navigation}) => {
     const onShare = async () => {
         try {
             const result = await Share.share({
-                url: qr,
+                url: hasData,
                 message: 'This is a QR Code Sharing test'
             });
             if (counter == 1) {
