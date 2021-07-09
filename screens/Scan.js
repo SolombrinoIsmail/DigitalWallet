@@ -3,16 +3,16 @@ import {
     View,
     Text,
     Image,
-    TouchableOpacity
+    TouchableOpacity, Alert, Button, Share, ScrollView
 } from "react-native"
 import {Camera} from 'expo-camera'
 import {COLORS, FONTS, SIZES, icons, images} from "../constants";
 import * as Haptics from 'expo-haptics';
-
+import QRCode from 'react-native-qrcode-svg';
 
 const Scan = ({navigation}) => {
     const [hasPermission, setHasPermission] = React.useState(null);
-
+    let qr = null;
 
     React.useEffect(() => {
         (async () => {
@@ -27,7 +27,6 @@ const Scan = ({navigation}) => {
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
-
 
     function renderHeader() {
         return (
@@ -108,21 +107,22 @@ const Scan = ({navigation}) => {
 
     function renderPaymentMethods() {
         return (
-            <View
+            <ScrollView
                 style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: 220,
+                    height: 300,
                     padding: SIZES.padding * 3,
                     borderTopLeftRadius: SIZES.radius,
                     borderTopRightRadius: SIZES.radius,
                     backgroundColor: COLORS.white
                 }}
             >
+                <Button onPress={onShare} title="Share" />
                 <Text style={{...FONTS.h4}}>Another payment methods</Text>
-
+                {displayQRCode()}
                 <View
                     style={{
                         flex: 1,
@@ -198,13 +198,61 @@ const Scan = ({navigation}) => {
                         <Text style={{marginLeft: SIZES.padding, ...FONTS.body4}}>Barcode</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 
     function onBarCodeRead(result) {
-        console.log(result.data)
+        if (result.data != null) {
+
+            Alert.alert(
+                "QR-Code scanned successfully",
+                "qr",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                    },
+                    {text: "OK", onPress: () => console.log("OK Pressed")}
+                ],
+                {cancelable: false}
+            );
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+            console.log(result.data)
+            qr = result.data
+            displayQRCode(qr)
+        }
     }
+
+    function displayQRCode(qr) {
+        if (qr != null) {
+            return (
+                <QRCode
+                    value={qr}
+                />)
+        }
+    }
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    "This is a test for sharing",
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 
     return (
         <View style={{flex: 1, backgroundColor: COLORS.transparent}}>
@@ -224,6 +272,8 @@ const Scan = ({navigation}) => {
                     buttonNegative: "Cancel"
                 }}
             >
+
+
                 {renderHeader()}
                 {renderScanFocus()}
                 {renderPaymentMethods()}
