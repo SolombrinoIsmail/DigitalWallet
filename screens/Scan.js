@@ -9,10 +9,13 @@ import {Camera} from 'expo-camera'
 import {COLORS, FONTS, SIZES, icons, images} from "../constants";
 import * as Haptics from 'expo-haptics';
 import QRCode from 'react-native-qrcode-svg';
+import {AsyncStorage} from 'react-native';
+import {render} from "react-dom";
 
 const Scan = ({navigation}) => {
     const [hasPermission, setHasPermission] = React.useState(null);
-    let qr = null;
+    const [hasData, setData] = React.useState(null);
+    var qr = "No Qr-Code scanned yet.";
     let counter = 0;
     React.useEffect(() => {
         (async () => {
@@ -121,16 +124,17 @@ const Scan = ({navigation}) => {
                     backgroundColor: COLORS.white
                 }}
             >
-                <Text style={{...FONTS.h2}}>Your QR-Code</Text>
+
                 <View
                     style={{
                         flex: 1,
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         alignItems: 'flex-start',
-                        marginTop: SIZES.padding * 1
                     }}
                 >
-                    {displayQRCode()}
+                    <Text style={{...FONTS.h2}}>Your QR-Code</Text>
+                    {displayQRLink(hasData)}
+                    {displayQRCode(hasData)}
                 </View>
                 <Text style={{...FONTS.h4}}>Another payment methods</Text>
                 <View
@@ -215,62 +219,79 @@ const Scan = ({navigation}) => {
 
     function onBarCodeRead(result) {
         if (result.data != null) {
-            if (counter == 0) {
+            if (counter === 0) {
+                setData(result.data)
+                console.log("QR Data:" + result.data)
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
                 Alert.alert(
                     "QR-Code scanned successfully",
                     "Nice",
                     [
                         {
                             text: "Cancel",
-                            onPress: () => console.log("Cancel Pressed"),
-                            style: "cancel"
+                            onPress: () => {
+                                counter = 0, console.log("Cancel Pressed")
+                            },
+                            style: "cancel",
                         },
-                        {text: "OK", onPress: () => console.log("OK Pressed")}
+                        {
+                            text: "OK", onPress: () => {
+                                counter = 0, console.log("OK Pressed")
+                            }
+                        }
                     ],
                     {cancelable: false}
                 );
-                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
-                console.log(result.data)
-                qr = "https://de.wikipedia.org"//result.data
-                displayQRCode(qr)
-                counter++;
+                counter++
             }
         }
     }
 
-    function displayQRCode(qr) {
-        console.log(qr)
+    function displayQRLink(QR) {
+        console.log("Param QR: " + QR)
         return (
-            <QRCode style={{marginLeft: 50}}
-                    value={qr}
-            />)
+            <View>
+                <Text>{QR}</Text>
+            </View>
+        )
+    }
 
+    function displayQRCode(QR) {
+        if (QR != null) {
+            console.log("Param QR: " + QR)
+            return (
+                <View>
+                    <QRCode style={{paddingLeft: 100}}
+                            value={hasData}
+                    />
+                </View>
+            )
+        }
     }
 
     const onShare = async () => {
-            try {
-                const result = await Share.share({
-                    url: "https://de.wikipedia.org/wiki/QR-Code",
-                    message: 'This is a QR Code Sharing test'
-                });
-                if (counter == 1) {
-                    if (result.action === Share.sharedAction) {
-                        if (result.activityType) {
-                            // shared with activity type of result.activityType
-                        } else {
+        try {
+            const result = await Share.share({
+                url: qr,
+                message: 'This is a QR Code Sharing test'
+            });
+            if (counter == 1) {
+                if (result.action === Share.sharedAction) {
+                    if (result.activityType) {
+                        // shared with activity type of result.activityType
+                    } else {
 
-                        }
-                        counter--;
-                    } else if (result.action === Share.dismissedAction) {
-                        // dismissed
                     }
+                    counter--;
+                } else if (result.action === Share.dismissedAction) {
+                    // dismissed
                 }
-            } catch
-                (error) {
-                alert(error.message);
             }
+        } catch
+            (error) {
+            alert(error.message);
         }
-    ;
+    }
 
     return (
         <View style={{flex: 1, backgroundColor: COLORS.transparent}}>
