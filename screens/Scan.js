@@ -11,9 +11,9 @@ import * as Haptics from 'expo-haptics';
 import QRCode from 'react-native-qrcode-svg';
 import {AsyncStorage} from 'react-native';
 import {render} from "react-dom";
-
+let counter = 0;
 const Scan = ({navigation}) => {
-    let counter = 0;
+
     const [hasPermission, setHasPermission] = React.useState(null);
     const [hasData, setData] = React.useState(null);
     React.useEffect(() => {
@@ -132,6 +132,7 @@ const Scan = ({navigation}) => {
                     }}
                 >
                     <Text style={{...FONTS.h2}}>Your QR-Code</Text>
+
                     {displayQRLink(hasData)}
                     {displayQRCode(hasData)}
                 </View>
@@ -219,6 +220,7 @@ const Scan = ({navigation}) => {
 
     function onBarCodeRead(result) {
         if (counter === 0) {
+            counter = 1
             Alert.alert(
                 "QR-Code scanned successfully",
                 "Nice",
@@ -238,7 +240,6 @@ const Scan = ({navigation}) => {
                 ],
                 {cancelable: false}
             )
-            counter = 1
             setData(result.data)
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
             counter++
@@ -246,6 +247,7 @@ const Scan = ({navigation}) => {
     }
 
     function displayQRLink(QR) {
+        console.log(hasData)
         return (
             <View>
                 <Text>{QR}</Text>
